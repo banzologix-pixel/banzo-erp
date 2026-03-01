@@ -68,28 +68,29 @@ function AddRouting() {
 
     if (error) {
       setMessage('Error saving routing: ' + error.message);
-    } else {
-      setMessage('Routing step saved successfully!');
-      setSequenceNo('');
-      setOperationId('');
-      setStandardTime('');
-      setIsActive(true);
-
-      // Reload routing list
-    
-        from('item_routing')
-        .select(`
-          id,
-          sequence_no,
-          standard_time_minutes,
-          is_active,
-          operations ( name )
-        `)
-        .eq('item_id', selectedItem)
-        .order('sequence_no', { ascending: true });
-
-      setRoutingList(data || []);
+      return;
     }
+
+    setMessage('Routing step saved successfully!');
+    setSequenceNo('');
+    setOperationId('');
+    setStandardTime('');
+    setIsActive(true);
+
+    // Reload routing list
+    const { data: routingData } = await supabase
+      .from('item_routing')
+      .select(`
+        id,
+        sequence_no,
+        standard_time_minutes,
+        is_active,
+        operations ( name )
+      `)
+      .eq('item_id', selectedItem)
+      .order('sequence_no', { ascending: true });
+
+    setRoutingList(routingData || []);
   }
 
   return (

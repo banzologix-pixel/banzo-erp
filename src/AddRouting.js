@@ -76,8 +76,8 @@ function AddRouting() {
       setIsActive(true);
 
       // Reload routing list
-      const { data } = await supabase
-        .from('item_routing')
+    
+        from('item_routing')
         .select(`
           id,
           sequence_no,
